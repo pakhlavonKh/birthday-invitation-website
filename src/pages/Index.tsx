@@ -1,182 +1,218 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
 import partyHero from "@/assets/party-hero.jpg";
 import partyTiming from "@/assets/party-timing.jpg";
 import partyLocation from "@/assets/party-location.jpg";
 import partyVibe from "@/assets/party-vibe.jpg";
 
-const Index = () => {
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const ImageCard = ({ src, alt }: any) => (
+  <div className="relative group overflow-hidden rounded-2xl shadow-xl">
+    <img
+      src={src}
+      alt={alt}
+      className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+  </div>
+);
+
+const Section = ({ title, children }: any) => (
+  <motion.section
+    variants={fadeUp}
+    className="mb-20"
+  >
+    <p className="text-center text-6xl md:text-7xl italic text-muted-foreground/10 select-none">
+      {title}
+    </p>
+    <h2 className="text-center text-3xl md:text-4xl italic -mt-6 mb-10">
+      {title}
+    </h2>
+    {children}
+  </motion.section>
+);
+
+export default function Index() {
+  // COUNTDOWN
+  const targetDate = new Date("2024-10-13T18:00:00");
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(targetDate.getTime() - Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const days = Math.max(0, Math.floor(time / (1000 * 60 * 60 * 24)));
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-md px-6 py-12">
-        
-        {/* Watermark text */}
-        <p className="text-center font-heading text-8xl font-light italic text-muted-foreground/20 leading-none select-none">
-          Birthday Party
-        </p>
+    <div className="relative min-h-screen bg-background overflow-x-hidden">
 
-        {/* Title */}
-        <h1 className="text-center font-heading text-5xl italic font-light text-foreground -mt-6 mb-8">
-          Birthday Party
-        </h1>
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,#f5e6da,transparent_40%),radial-gradient(circle_at_80%_30%,#e8cfc0,transparent_40%)] animate-pulse" />
 
-        {/* Hero Image */}
-        <div className="mb-8 px-4">
-          <div className="border-[6px] border-secondary p-1">
-            <img 
-              src={partyHero} 
-              alt="Birthday celebration" 
-              className="w-full object-cover"
-              width={800}
-              height={1000}
-            />
-          </div>
-        </div>
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="max-w-6xl mx-auto px-6 py-12"
+      >
 
-        {/* Date */}
-        <p className="text-center font-heading text-xl italic text-muted-foreground mb-10">
-          13/10/2024
-        </p>
-
-        {/* Invitation Text */}
-        <div className="text-center px-4 mb-12">
-          <p className="font-body text-sm leading-relaxed text-foreground mb-4">
-            Дорогие друзья! Совсем скоро наступает настоящая именинная 
-            пора для меня — мне исполняется целых 6 лет! И без вашего 
-            тепла и участия этот день будет не таким ярким, поэтому 
-            приглашаю вас вместе отпраздновать мой День рождения!
-          </p>
-          <p className="font-body text-sm leading-relaxed text-foreground mb-4">
-            Мы обещаем вас вкусно покормить!
-          </p>
-          <p className="font-body text-sm italic text-muted-foreground">
-            Подробности вы найдете ниже ↓
-          </p>
-        </div>
-
-        {/* Timing Section */}
-        <div className="mb-12">
-          <p className="text-center font-heading text-7xl font-light italic text-muted-foreground/20 leading-none select-none mb-0">
-            Timing
-          </p>
-          <h2 className="text-center font-heading text-4xl italic font-light text-foreground -mt-4 mb-8">
-            Timing
-          </h2>
-
-          <div className="flex justify-center gap-12 mb-8">
-            <div className="text-center">
-              <p className="font-heading text-sm uppercase tracking-widest text-muted-foreground mb-1">Сбор гостей</p>
-              <p className="font-heading text-2xl text-foreground">18:00</p>
-            </div>
-            <div className="text-center">
-              <p className="font-heading text-sm uppercase tracking-widest text-muted-foreground mb-1">Начало</p>
-              <p className="font-heading text-2xl text-foreground">18:30</p>
-            </div>
-          </div>
-
-          <div className="px-4">
-            <div className="border-[6px] border-secondary p-1">
-              <img 
-                src={partyTiming} 
-                alt="Dinner table setting" 
-                className="w-full object-cover"
-                loading="lazy"
-                width={800}
-                height={600}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Location Section */}
-        <div className="mb-12">
-          <p className="text-center font-heading text-7xl font-light italic text-muted-foreground/20 leading-none select-none mb-0">
-            Location
-          </p>
-          <h2 className="text-center font-heading text-4xl italic font-light text-foreground -mt-4 mb-6">
-            Location
-          </h2>
-
-          <div className="text-center mb-6">
-            <p className="font-body text-sm text-muted-foreground mb-1">Праздник пройдет в кафе</p>
-            <p className="font-heading text-xl text-foreground italic">City Dance Club</p>
-          </div>
-
-          <div className="text-center mb-8">
-            <p className="font-body text-xs text-muted-foreground mb-3">
-              Он находится по адресу<br />
-              Замоскворецкая ул. д.12, Москва
+        {/* HERO GRID */}
+        <div className="grid md:grid-cols-2 gap-10 items-center mb-20">
+          
+          <motion.div variants={fadeUp}>
+            <p className="text-7xl md:text-8xl italic text-muted-foreground/10">
+              Birthday
             </p>
-          </div>
+            <h1 className="text-4xl md:text-6xl italic -mt-6 mb-6">
+              Birthday Party
+            </h1>
 
-          <div className="px-4">
-            <div className="border-[6px] border-secondary p-1">
-              <img 
-                src={partyLocation} 
-                alt="Party location" 
-                className="w-full object-cover"
-                loading="lazy"
-                width={800}
-                height={600}
-              />
+            <p className="text-lg italic text-muted-foreground mb-6">
+              13 / 10 / 2024
+            </p>
+
+            {/* Countdown */}
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                До праздника
+              </p>
+              <p className="text-3xl font-bold">{days} дней</p>
             </div>
-          </div>
+
+            <p className="text-sm leading-relaxed max-w-md">
+              Дорогие друзья! Приглашаю вас отпраздновать мой День рождения.
+              Вас ждёт вкусная еда, веселье и отличное настроение.
+            </p>
+          </motion.div>
+
+          <motion.div variants={fadeUp}>
+            <ImageCard src={partyHero} alt="Hero" />
+          </motion.div>
         </div>
 
-        {/* Holiday Vibe Section */}
-        <div className="mb-12">
-          <p className="text-center font-heading text-7xl font-light italic text-muted-foreground/20 leading-none select-none mb-0">
-            Holiday vibe
-          </p>
-          <h2 className="text-center font-heading text-4xl italic font-light text-foreground -mt-4 mb-8">
-            Holiday vibe
-          </h2>
-
-          <div className="text-center px-4 mb-8">
-            <p className="font-body text-sm leading-relaxed text-foreground">
-              Для моего праздника — повод надеть праздничный наряд! 
-              Я очень надеюсь встретить вас в нарядах и хорошем настроении! 
-              Пожалуйста, придерживайтесь, пожалуйста стиля «элегантный шик» — и мы 
-              погрузимся в атмосферу настоящего праздника.
-            </p>
-          </div>
-
-          {/* Dress code palette */}
-          <div className="flex justify-center gap-3 mb-8">
-            {['hsl(36, 33%, 90%)', 'hsl(30, 20%, 80%)', 'hsl(348, 25%, 32%)', 'hsl(20, 12%, 20%)', 'hsl(36, 15%, 95%)'].map((color, i) => (
+        {/* TIMING */}
+        <Section title="Timing">
+          <div className="grid grid-cols-2 gap-6 max-w-md mx-auto mb-10">
+            {[
+              { label: "Сбор гостей", time: "18:00" },
+              { label: "Начало", time: "18:30" },
+            ].map((item, i) => (
               <div
                 key={i}
-                className="w-10 h-10 rounded-full border border-border"
+                className="text-center p-6 rounded-xl border hover:shadow-lg transition"
+              >
+                <p className="text-xs uppercase text-muted-foreground">
+                  {item.label}
+                </p>
+                <p className="text-2xl font-bold">{item.time}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <ImageCard src={partyTiming} alt="Timing" />
+          </div>
+        </Section>
+
+        {/* LOCATION */}
+        <Section title="Location">
+          <div className="text-center mb-6">
+            <p className="text-muted-foreground">Кафе</p>
+            <p className="text-xl italic">City Dance Club</p>
+          </div>
+
+          <p className="text-center text-sm text-muted-foreground mb-8">
+            Замоскворецкая ул. д.12, Москва
+          </p>
+
+          <div className="max-w-2xl mx-auto mb-8">
+            <ImageCard src={partyLocation} alt="Location" />
+          </div>
+
+          {/* MAP */}
+          <div className="max-w-2xl mx-auto">
+            <iframe
+              src="https://maps.google.com/maps?q=Москва Замоскворецкая 12&output=embed"
+              className="w-full h-64 rounded-xl border"
+            />
+          </div>
+        </Section>
+
+        {/* VIBE */}
+        <Section title="Dress Code">
+          <p className="text-center max-w-xl mx-auto mb-8">
+            Элегантный шик. Праздничные наряды приветствуются.
+          </p>
+
+          <div className="flex justify-center gap-3 mb-10">
+            {[
+              "#f5e6da",
+              "#d8c3b5",
+              "#7a3b3b",
+              "#2a2a2a",
+              "#faf3ee",
+            ].map((color, i) => (
+              <div
+                key={i}
+                className="w-10 h-10 rounded-full shadow hover:scale-110 transition"
                 style={{ backgroundColor: color }}
               />
             ))}
           </div>
 
-          <div className="px-4">
-            <div className="border-[6px] border-secondary p-1">
-              <img 
-                src={partyVibe} 
-                alt="Friends at the party" 
-                className="w-full object-cover"
-                loading="lazy"
-                width={800}
-                height={600}
-              />
-            </div>
+          <div className="max-w-2xl mx-auto">
+            <ImageCard src={partyVibe} alt="Vibe" />
           </div>
+        </Section>
+
+        {/* RSVP */}
+        <Section title="RSVP">
+          <form
+            className="max-w-md mx-auto flex flex-col gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              alert("Спасибо!");
+            }}
+          >
+            <input
+              placeholder="Ваше имя"
+              required
+              className="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-secondary outline-none"
+            />
+            <input
+              placeholder="Телефон"
+              className="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-secondary outline-none"
+            />
+            <button className="bg-secondary text-white py-3 rounded-lg hover:scale-[1.02] active:scale-[0.98] transition">
+              Подтвердить
+            </button>
+          </form>
+        </Section>
+
+        {/* FOOTER */}
+        <div className="text-center text-sm text-muted-foreground mt-20">
+          До встречи ❤
         </div>
 
-        {/* Footer */}
-        <div className="text-center py-8">
-          <p className="font-body text-xs text-muted-foreground mb-2">
-            Подтвердить, что вы придете, пожалуйста, заранее ❤
-          </p>
-          <p className="font-body text-xs text-muted-foreground italic mt-4">
-            До встречи! ХОХО
-          </p>
-        </div>
+      </motion.div>
 
-      </div>
     </div>
   );
-};
-
-export default Index;
+}
